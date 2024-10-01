@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->jsonb('params');
             $table->jsonb('body');
+            $table->jsonb('server');
             $table->unsignedFloat('memory');
 
             $table->unsignedFloat('requested_at');

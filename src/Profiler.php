@@ -13,6 +13,8 @@ class Profiler
 {
     protected array $request = [];
 
+    protected bool $requestFinished = false;
+
     protected Collection $requestQueries;
 
     protected Collection $requestCache;
@@ -46,10 +48,16 @@ class Profiler
             'memory' => memory_get_usage(true),
             'responsed_at' => microtime(true),
         ];
+
+        $this->requestFinished = true;
     }
 
     public function addRequestQuery(string $sql, string $point, float $time, float $executed_at): void
     {
+        if($this->requestFinished) {
+            return;
+        }
+
         $this->requestQueries->add([
             'sql' => $sql,
             'point' => $point,

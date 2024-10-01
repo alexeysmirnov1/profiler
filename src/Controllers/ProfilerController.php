@@ -3,11 +3,27 @@
 namespace Profiler\Controllers;
 
 use Illuminate\View\View;
+use Profiler\Models\Request;
+use Profiler\Resources\RequestIndexResource;
 
 class ProfilerController
 {
     public function index(): View
     {
+//        dd(
+//            now()->subHours(6)->unix(),
+//            microtime(true),
+//        );
+        $from = now()->subHours(6)->unix();
+
+        $requests = Request::with('route')
+            ->where('requested_at', '>', $from)
+            ->latest('requested_at')
+            ->get();
+//dd(
+////    $requests,
+//    RequestIndexResource::collection($requests)->jsonSerialize(),
+//);
         return view('profiler::index', [
             'usage' => [
                 'web' => [
@@ -23,13 +39,7 @@ class ProfilerController
                 'api' => [],
                 'admin' => [],
             ],
-            'requests' => [
-                [
-                    'route' => 0,
-                    'memory' => 0,
-                    'time' => 0,
-                ]
-            ],
+            'requests' => RequestIndexResource::collection($requests),
             'queries' => [
                 [
                     'query' => [

@@ -40,7 +40,8 @@
         @foreach($queries as $request)
             <tr>
                 @foreach($request as $value)
-                    <td>{{ $value }}</td>
+                    @dump($value)
+{{--                    <td>{{ $value }}</td>--}}
                 @endforeach
             </tr>
         @endforeach

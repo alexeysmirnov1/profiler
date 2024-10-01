@@ -24,11 +24,12 @@ class Request extends Model
     protected $casts = [
         'params' => 'array',
         'body' => 'array',
+        'server' => 'array',
     ];
 
     public function route(): BelongsTo
     {
-        return $this->belongsTo(Route::class);
+        return $this->belongsTo(Route::class, 'profiler_route_id', 'id');
     }
 
     public function queries(): HasMany
